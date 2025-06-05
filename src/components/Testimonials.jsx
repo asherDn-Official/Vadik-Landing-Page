@@ -82,7 +82,7 @@ const Testimonials = () => {
         </motion.div>
 
         {/* Slider */}
-        <div className="relative max-w-xl mx-auto h-[420px] md:h-[560px]">
+        <div className="relative max-w-xl mx-auto h-[420px] ">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
