@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const AboutSection = () => {
   const [ref, inView] = useInView({
@@ -11,7 +11,7 @@ const AboutSection = () => {
     "Collect rich, organized customer data",
     "Respect privacy and build emotional trust",
     "Personalize offers, service, and communication",
-    "Increase loyalty, repeat sales, and customer lifetime value"
+    "Increase loyalty, repeat sales, and customer lifetime value",
   ];
 
   const containerVariants = {
@@ -19,9 +19,9 @@ const AboutSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -29,8 +29,8 @@ const AboutSection = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
@@ -46,9 +46,9 @@ const AboutSection = () => {
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-accent-500/10 rounded-full z-0"></div>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-500/10 rounded-full z-0"></div>
             <div className="relative z-10 overflow-hidden rounded-2xl shadow-card">
-              <img 
-                src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                alt="Customer Profiles" 
+              <img
+                src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Customer Profiles"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -61,18 +61,23 @@ const AboutSection = () => {
             className="space-y-6"
           >
             <motion.div variants={itemVariants}>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">What is Vadik.ai?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-left">
+                What is Vadik.ai?
+              </h2>
               <div className="w-20 h-1.5 bg-accent-500 rounded-full mb-6"></div>
             </motion.div>
 
-            <motion.p variants={itemVariants} className="text-lg text-gray-700 mb-6">
-              Vadik.ai is the world's first Customer Profile Management Platform.
-              It helps retailers like you:
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-gray-700 mb-6 text-left"
+            >
+              Vadik.ai is the world's first Customer Profile Management
+              Platform. It helps retailers like you:
             </motion.p>
 
             <motion.ul variants={containerVariants} className="space-y-4">
               {benefits.map((benefit, index) => (
-                <motion.li 
+                <motion.li
                   key={index}
                   variants={itemVariants}
                   className="flex items-start"
@@ -85,7 +90,10 @@ const AboutSection = () => {
               ))}
             </motion.ul>
 
-            <motion.p variants={itemVariants} className="text-lg font-medium text-primary-700 mt-6">
+            <motion.p
+              variants={itemVariants}
+              className="text-lg font-medium text-primary-700 mt-6 text-left"
+            >
               All in one simple dashboard.
             </motion.p>
           </motion.div>

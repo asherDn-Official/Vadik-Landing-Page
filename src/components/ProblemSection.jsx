@@ -55,7 +55,7 @@ const ProblemSection = () => {
                 The Challenges
               </h3>
 
-              <ul className="space-y-4">
+              <ul className="space-y-4 text-left">
                 {problems.map((problem, index) => (
                   <motion.li
                     key={index}
@@ -90,7 +90,7 @@ const ProblemSection = () => {
               </motion.div>
             </div>
 
-            <div className="bg-primary-50 rounded-2xl shadow-card p-8 border border-primary-100">
+            <div className="bg-primary-50 rounded-2xl shadow-card p-8 border border-primary-100 text-left">
               <h3 className="text-xl font-semibold mb-6 flex items-center text-gray-800">
                 <HiOutlineCheckCircle className="text-secondary-500 mr-2 text-2xl" />
                 The Solution

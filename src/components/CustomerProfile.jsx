@@ -52,8 +52,12 @@ const CustomerProfile = () => {
             </div>
 
             <div className="pt-16 p-6">
-              <h3 className="text-2xl font-bold text-gray-800">Priya S</h3>
-              <p className="text-gray-500 mb-6">Customer since June 2022</p>
+              <h3 className="text-2xl font-bold text-gray-800 text-left">
+                Priya S
+              </h3>
+              <p className="text-gray-500 mb-6 text-left">
+                Customer since June 2022
+              </p>
 
               <div className="space-y-4">
                 <div className="flex items-start">
