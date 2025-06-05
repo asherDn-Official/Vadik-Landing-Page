@@ -182,8 +182,8 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
           <p>
-            &copy; {currentYear} Vadik.ai – Your Customers Love It. RK Platforms
-            India Private Limited , All rights reserved.
+            &copy; {currentYear} RK Platforms India Private Limited , All rights
+            reserved.
           </p>
         </div>
       </div>
