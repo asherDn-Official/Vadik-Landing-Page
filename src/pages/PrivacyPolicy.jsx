@@ -3,13 +3,11 @@ import React from "react";
 const PrivacyPolicy = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 fade-in">
-      {/* Centered heading and date */}
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-4">Vadik AI – Privacy Policy</h1>
         <p className="mb-6 text-sm text-gray-600">Last Updated: June 5, 2025</p>
       </div>
 
-      {/* Left-aligned policy content */}
       <div className="text-left text-sm leading-6 text-gray-800 space-y-4">
         <p>
           This Privacy Policy explains how Vadik AI ("we," "us," or "our")
@@ -125,13 +123,13 @@ const PrivacyPolicy = () => {
         <h2 className="font-semibold text-lg mt-6">
           6. Data Retention & Deletion
         </h2>
+        <p>We retain personal data only as long as necessary to:</p>
+        <ul className="list-disc list-inside ml-4">
+          <li>Provide our services</li>
+          <li>Comply with legal or financial obligations</li>
+          <li>Enforce our terms</li>
+        </ul>
         <p>
-          We retain personal data only as long as necessary to:
-          <ul className="list-disc list-inside ml-4">
-            <li>Provide our services</li>
-            <li>Comply with legal or financial obligations</li>
-            <li>Enforce our terms</li>
-          </ul>
           You may request data deletion by emailing{" "}
           <a href="mailto:support@vadik.ai" className="text-blue-600 underline">
             support@vadik.ai
@@ -201,7 +199,7 @@ const PrivacyPolicy = () => {
             support@vadik.ai
           </a>
           <br />
-          🏢 Address: Vadik AI Technologies,Chennai, India
+          🏢 Address: Vadik AI Technologies, Chennai, India
         </p>
       </div>
     </div>

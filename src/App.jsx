@@ -28,14 +28,11 @@ function App() {
       { threshold: 0.1 }
     );
 
-    document.querySelectorAll(".fade-in").forEach((el) => {
-      observer.observe(el);
-    });
+    const elements = document.querySelectorAll(".fade-in");
+    elements.forEach((el) => observer.observe(el));
 
     return () => {
-      document.querySelectorAll(".fade-in").forEach((el) => {
-        observer.unobserve(el);
-      });
+      elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
 

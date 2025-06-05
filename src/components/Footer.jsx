@@ -1,4 +1,6 @@
-import { Link } from "react-scroll";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
+
 import {
   HiOutlineMail,
   HiOutlinePhone,
@@ -14,10 +16,11 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 text-left">
           <div>
-            {/* <h3 className="text-2xl font-bold mb-6">
-              Vadik<span className="text-pink-500">.ai</span>
-            </h3> */}
-            <img className="w-20" src="./logo-vadic-white.png" alt="" />
+            <img
+              className="w-20"
+              src="./logo-vadic-white.png"
+              alt="Vadik Logo"
+            />
             <p className="text-gray-400 mb-6">
               Customer Profile. Respect. Growth.
             </p>
@@ -53,7 +56,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link
+                <ScrollLink
                   to="problem"
                   smooth={true}
                   offset={-70}
@@ -61,10 +64,10 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                 >
                   The Problem
-                </Link>
+                </ScrollLink>
               </li>
               <li>
-                <Link
+                <ScrollLink
                   to="about"
                   smooth={true}
                   offset={-70}
@@ -72,10 +75,10 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                 >
                   About Vadik.ai
-                </Link>
+                </ScrollLink>
               </li>
               <li>
-                <Link
+                <ScrollLink
                   to="how-it-works"
                   smooth={true}
                   offset={-70}
@@ -83,10 +86,10 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                 >
                   How It Works
-                </Link>
+                </ScrollLink>
               </li>
               <li>
-                <Link
+                <ScrollLink
                   to="profiles"
                   smooth={true}
                   offset={-70}
@@ -94,10 +97,10 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                 >
                   Customer Profiles
-                </Link>
+                </ScrollLink>
               </li>
               <li>
-                <Link
+                <ScrollLink
                   to="testimonials"
                   smooth={true}
                   offset={-70}
@@ -105,7 +108,7 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                 >
                   Testimonials
-                </Link>
+                </ScrollLink>
               </li>
             </ul>
           </div>
@@ -161,20 +164,20 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="/privacy-policy"
+                <RouterLink
+                  to="/privacy-policy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </RouterLink>
               </li>
               <li>
-                <a
-                  href="/terms-and-conditions"
+                <RouterLink
+                  to="/terms-and-conditions"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
-                </a>
+                </RouterLink>
               </li>
             </ul>
           </div>
@@ -182,7 +185,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
           <p>
-            &copy; {currentYear} RK Platforms India Private Limited , All rights
+            &copy; {currentYear} RK Platforms India Private Limited, All rights
             reserved.
           </p>
         </div>
