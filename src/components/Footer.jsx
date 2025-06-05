@@ -164,20 +164,20 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <RouterLink
-                  to="/privacy-policy"
+                <a
+                  href="/privacy-policy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Privacy Policy
-                </RouterLink>
+                </a>
               </li>
               <li>
-                <RouterLink
-                  to="/terms-and-conditions"
+                <a
+                  href="/terms-and-conditions"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
-                </RouterLink>
+                </a>
               </li>
             </ul>
           </div>
