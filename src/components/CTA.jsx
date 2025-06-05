@@ -252,7 +252,7 @@ const CTA = () => {
                     "We saw a 40% increase in repeat purchases within the first
                     month."
                   </blockquote>
-                  <div className="mt-4 flex items-center">
+                  <div className="mt-4 flex items-center text-left">
                     <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
                       <img
                         src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"

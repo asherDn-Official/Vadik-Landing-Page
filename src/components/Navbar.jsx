@@ -33,7 +33,7 @@ const Navbar = () => {
       className={` transition-all duration-300 ${
         scrolled
           ? "bg-white/95 shadow-soft backdrop-blur-sm py-3"
-          : "bg-transparent py-5"
+          : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -44,9 +44,10 @@ const Navbar = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center"
           >
-            <span className="text-2xl font-bold text-primary-600">
+            {/* <span className="text-2xl font-bold text-primary-600">
               Vadik<span className="text-pink-500">.ai</span>
-            </span>
+            </span> */}
+            <img className="w-36" src="./logo-vadic.jpeg" alt="" />
           </motion.div>
 
           {/* Desktop Navigation */}
