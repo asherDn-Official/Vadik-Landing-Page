@@ -1,46 +1,46 @@
-import { useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ProblemSection from './components/ProblemSection';
-import AboutSection from './components/AboutSection';
-import HowItWorks from './components/HowItWorks';
-import CustomerProfile from './components/CustomerProfile';
-import Testimonials from './components/Testimonials';
-import CTA from './components/CTA';
-import Footer from './components/Footer';
-import './App.css';
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import ProblemSection from "./components/ProblemSection";
+import AboutSection from "./components/AboutSection";
+import HowItWorks from "./components/HowItWorks";
+import CustomerProfile from "./components/CustomerProfile";
+import Testimonials from "./components/Testimonials";
+import CTA from "./components/CTA";
+import Footer from "./components/Footer";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import "./App.css";
 
 function App() {
   useEffect(() => {
-    // Update title
     document.title = "Vadik.ai";
-    
-    // Add intersection observer for fade-in animations
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            entry.target.classList.add("visible");
           }
         });
       },
       { threshold: 0.1 }
     );
-    
-    document.querySelectorAll('.fade-in').forEach((el) => {
+
+    document.querySelectorAll(".fade-in").forEach((el) => {
       observer.observe(el);
     });
-    
+
     return () => {
-      document.querySelectorAll('.fade-in').forEach((el) => {
+      document.querySelectorAll(".fade-in").forEach((el) => {
         observer.unobserve(el);
       });
     };
   }, []);
 
-  return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
+  const Home = () => (
+    <>
       <Hero />
       <ProblemSection />
       <AboutSection />
@@ -48,8 +48,24 @@ function App() {
       <CustomerProfile />
       <Testimonials />
       <CTA />
-      <Footer />
-    </div>
+    </>
+  );
+
+  return (
+    <Router>
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditions />}
+          />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
