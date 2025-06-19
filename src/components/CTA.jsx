@@ -62,7 +62,7 @@ const CTA = () => {
           className="text-center max-w-3xl mx-auto mb-12"
         >
           <h2 className="text-2xl md:text-4xl font-bold mb-4">
-            Retailers win when they understand customers better.
+            Businesses win when they understand customers better.
           </h2>
           <p className="text-lg text-white/90 mb-8">
             Start your journey with Vadik.ai.

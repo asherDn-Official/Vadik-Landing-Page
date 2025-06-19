@@ -72,7 +72,7 @@ const AboutSection = () => {
               className="text-lg text-gray-700 mb-6 text-left"
             >
               Vadik.ai is the world's first Customer Profile Management
-              Platform. It helps retailers like you:
+              Platform. It helps businesses like you:
             </motion.p>
 
             <motion.ul variants={containerVariants} className="space-y-4">
