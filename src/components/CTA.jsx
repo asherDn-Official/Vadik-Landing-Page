@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState } from "react";
-import axios from "axios";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import api from "../api/api";
 
 const CTA = () => {
   const [ref, inView] = useInView({
@@ -10,11 +12,12 @@ const CTA = () => {
   });
 
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
+    phoneCode: "+91",
     phone: "",
-    company: "",
-    message: "",
+    storeName: "",
+    businessNeeds: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,22 +30,38 @@ const CTA = () => {
     });
   };
 
+  const handlePhoneChange = (value, country) => {
+    setFormData({
+      ...formData,
+      phoneCode: `+${country.dialCode}`,
+      phone: value.replace(country.dialCode, ""),
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const payload = {
+        ...formData,
+        action: "register"
+      };
+      
+      const response = await api.post(`/api/retailer/register`, payload);
+      
       setFormStatus("success");
       setFormData({
-        name: "",
+        fullName: "",
         email: "",
+        phoneCode: "+91",
         phone: "",
-        company: "",
-        message: "",
+        storeName: "",
+        businessNeeds: "",
       });
     } catch (error) {
       setFormStatus("error");
+      console.error("Error submitting form:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -93,18 +112,18 @@ const CTA = () => {
                     <div>
                       <label
                         className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="name"
+                        htmlFor="fullName"
                       >
                         Full Name
                       </label>
                       <input
                         type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
+                        id="fullName"
+                        name="fullName"
+                        value={formData.fullName}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700"
                         placeholder="Your name"
                       />
                     </div>
@@ -122,7 +141,7 @@ const CTA = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        className="w-full px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                         placeholder="you@company.com"
                       />
                     </div>
@@ -136,49 +155,48 @@ const CTA = () => {
                       >
                         Phone
                       </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
-                        placeholder="Your phone number"
+                      <PhoneInput
+                        country={'in'}
+                        value={`${formData.phoneCode}${formData.phone}`}
+                        onChange={handlePhoneChange}
+                        inputClass="w-full px-4 py-4 border text-gray-700 border-gray-300 rounded-lg  outline-none transition-all"
+                        inputStyle={{ width: '100%' }}
+                        dropdownClass="text-gray-700"
                       />
                     </div>
                     <div>
                       <label
                         className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="company"
+                        htmlFor="storeName"
                       >
-                        Company
+                        Store Name
                       </label>
                       <input
                         type="text"
-                        id="company"
-                        name="company"
-                        value={formData.company}
+                        id="storeName"
+                        name="storeName"
+                        value={formData.storeName}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
-                        placeholder="Your company"
+                        className="w-full px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        placeholder="Your store name"
                       />
                     </div>
                   </div>
 
                   <div className="mb-6 ">
                     <label
-                      className="block text-sm font-medium text-gray-700 mb-1 text-left"
-                      htmlFor="message"
+                      className="block text-sm font-medium text-gray-700 mb-1 text-left "
+                      htmlFor="businessNeeds"
                     >
                       How can we help?
                     </label>
                     <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
+                      id="businessNeeds"
+                      name="businessNeeds"
+                      value={formData.businessNeeds}
                       onChange={handleChange}
                       rows="3"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                      className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
                       placeholder="Tell us about your business needs"
                     ></textarea>
                   </div>
