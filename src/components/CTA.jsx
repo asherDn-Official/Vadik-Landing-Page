@@ -45,7 +45,7 @@ const CTA = () => {
     try {
       const payload = {
         ...formData,
-        action: "register"
+        action: "FreeTrail"
       };
       
       const response = await api.post(`/api/retailer/register`, payload);
