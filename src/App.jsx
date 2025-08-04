@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import "./App.css";
+import QuizPage from "./pages/QuizPage";
 
 function App() {
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/quiz" element={<QuizPage />} />
           <Route
             path="/terms-and-conditions"
             element={<TermsAndConditions />}
