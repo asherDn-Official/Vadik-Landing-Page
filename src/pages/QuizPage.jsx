@@ -264,7 +264,7 @@ const QuizPage = () => {
   const currentQuestion = questions[quizState.currentQuestion];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4 pt-10 pb-10">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
