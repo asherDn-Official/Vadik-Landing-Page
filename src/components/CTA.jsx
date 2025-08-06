@@ -22,6 +22,7 @@ const CTA = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(" error submit the form");
 
   const handleChange = (e) => {
     setFormData({
@@ -62,6 +63,7 @@ const CTA = () => {
     } catch (error) {
       setFormStatus("error");
       console.error("Error submitting form:", error);
+      setErrorMessage(error.response.data.message)
     } finally {
       setIsSubmitting(false);
     }
@@ -103,7 +105,7 @@ const CTA = () => {
                   </div>
                 ) : formStatus === "error" ? (
                   <div className="bg-red-50 text-red-800 p-4 rounded-lg mb-6">
-                    <p>Something went wrong. Please try again later.</p>
+                    <p>{errorMessage}</p>
                   </div>
                 ) : null}
 
