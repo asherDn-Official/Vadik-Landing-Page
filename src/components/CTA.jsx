@@ -99,7 +99,7 @@ const CTA = () => {
 
                 {formStatus === "success" ? (
                   <div className="bg-green-50 text-green-800 p-4 rounded-lg mb-6">
-                    <p>Thank you for your interest! We'll be in touch soon.</p>
+                    <p>Thank you for your interest! We have sent your credentials to your registered email. Please check your inbox.</p>
                   </div>
                 ) : formStatus === "error" ? (
                   <div className="bg-red-50 text-red-800 p-4 rounded-lg mb-6">
