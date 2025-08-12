@@ -3,7 +3,37 @@ import { useInView } from "react-intersection-observer";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import * as yup from "yup"; // Import Yup
 import api from "../api/api";
+
+// Define validation schema
+const formSchema = yup.object().shape({
+  fullName: yup
+    .string()
+    .required("Full name is required")
+    .matches(/^[A-Za-z\s]+$/, "Only letters are allowed")
+    .max(15, "Full name must be 30 characters or less"),
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Invalid email format")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Invalid email format"
+    ),
+  phone: yup
+    .string()
+    .required("Phone number is required")
+    .min(5, "Phone number is too short")
+    .max(15, "Phone number is too long"),
+  storeName: yup
+    .string()
+    .required("Store name is required")
+    .max(30, "Store name must be 30 characters or less"),
+  businessNeeds: yup
+    .string()
+    .max(500, "Description must be 500 characters or less"),
+});
 
 const CTA = () => {
   const [ref, inView] = useInView({
@@ -22,13 +52,20 @@ const CTA = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(" error submit the form");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({}); // Field-specific errors
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handlePhoneChange = (value, country) => {
@@ -37,13 +74,22 @@ const CTA = () => {
       phoneCode: `+${country.dialCode}`,
       phone: value.replace(country.dialCode, ""),
     });
+
+    // Clear phone error when user changes input
+    if (errors.phone) {
+      setErrors({ ...errors, phone: "" });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrors({});
 
     try {
+      // Validate form data
+      await formSchema.validate(formData, { abortEarly: false });
+
       const payload = {
         ...formData,
         action: "FreeTrail",
@@ -61,9 +107,23 @@ const CTA = () => {
         businessNeeds: "",
       });
     } catch (error) {
-      setFormStatus("error");
-      console.error("Error submitting form:", error);
-      setErrorMessage(error.response.data.message);
+      if (error instanceof yup.ValidationError) {
+        // Handle validation errors
+        const newErrors = {};
+        error.inner.forEach((err) => {
+          newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+        setFormStatus("error");
+        setErrorMessage("Please correct the errors in the form");
+      } else {
+        // Handle API errors
+        setFormStatus("error");
+        console.error("Error submitting form:", error);
+        setErrorMessage(
+          error.response?.data?.message || "Error submitting the form"
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -128,11 +188,19 @@ const CTA = () => {
                         value={formData.fullName}
                         onChange={handleChange}
                         required
-                        pattern="^[A-Za-z\s]+$"
-                        title="Only letters are allowed"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700"
+                        maxLength={30}
+                        className={`w-full px-4 py-2 border ${
+                          errors.fullName
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700`}
                         placeholder="Your name"
                       />
+                      {errors.fullName && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.fullName}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label
@@ -148,9 +216,16 @@ const CTA = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        className={`w-full px-4 py-2 border ${
+                          errors.email ? "border-red-500" : "border-gray-300"
+                        } text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
                         placeholder="you@company.com"
                       />
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -166,10 +241,17 @@ const CTA = () => {
                         country={"in"}
                         value={`${formData.phoneCode}${formData.phone}`}
                         onChange={handlePhoneChange}
-                        inputClass="w-full px-4 py-4 border text-gray-700 border-gray-300 rounded-lg  outline-none transition-all"
+                        inputClass={`w-full px-4 py-4 border ${
+                          errors.phone ? "border-red-500" : "border-gray-300"
+                        } text-gray-700 rounded-lg outline-none transition-all`}
                         inputStyle={{ width: "100%" }}
                         dropdownClass="text-gray-700"
                       />
+                      {errors.phone && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.phone}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label
@@ -184,9 +266,20 @@ const CTA = () => {
                         name="storeName"
                         value={formData.storeName}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                        required
+                        maxLength={30}
+                        className={`w-full px-4 py-2 border ${
+                          errors.storeName
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        } text-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
                         placeholder="Your store name"
                       />
+                      {errors.storeName && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.storeName}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -203,9 +296,19 @@ const CTA = () => {
                       value={formData.businessNeeds}
                       onChange={handleChange}
                       rows="3"
-                      className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                      maxLength={500}
+                      className={`w-full px-4 py-2 text-gray-700 border ${
+                        errors.businessNeeds
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
                       placeholder="Tell us about your business needs"
                     ></textarea>
+                    {errors.businessNeeds && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.businessNeeds}
+                      </p>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap gap-4">
