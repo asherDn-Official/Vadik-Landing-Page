@@ -46,11 +46,11 @@ const CTA = () => {
     try {
       const payload = {
         ...formData,
-        action: "FreeTrail"
+        action: "FreeTrail",
       };
-      
+
       const response = await api.post(`/api/retailer/register`, payload);
-      
+
       setFormStatus("success");
       setFormData({
         fullName: "",
@@ -63,7 +63,7 @@ const CTA = () => {
     } catch (error) {
       setFormStatus("error");
       console.error("Error submitting form:", error);
-      setErrorMessage(error.response.data.message)
+      setErrorMessage(error.response.data.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -101,7 +101,10 @@ const CTA = () => {
 
                 {formStatus === "success" ? (
                   <div className="bg-green-50 text-green-800 p-4 rounded-lg mb-6">
-                    <p>Thank you for your interest! We have sent your credentials to your registered email. Please check your inbox.</p>
+                    <p>
+                      Thank you for your interest! We have sent your credentials
+                      to your registered email. Please check your inbox.
+                    </p>
                   </div>
                 ) : formStatus === "error" ? (
                   <div className="bg-red-50 text-red-800 p-4 rounded-lg mb-6">
@@ -125,6 +128,8 @@ const CTA = () => {
                         value={formData.fullName}
                         onChange={handleChange}
                         required
+                        pattern="^[A-Za-z\s]+$"
+                        title="Only letters are allowed"
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700"
                         placeholder="Your name"
                       />
@@ -158,11 +163,11 @@ const CTA = () => {
                         Phone
                       </label>
                       <PhoneInput
-                        country={'in'}
+                        country={"in"}
                         value={`${formData.phoneCode}${formData.phone}`}
                         onChange={handlePhoneChange}
                         inputClass="w-full px-4 py-4 border text-gray-700 border-gray-300 rounded-lg  outline-none transition-all"
-                        inputStyle={{ width: '100%' }}
+                        inputStyle={{ width: "100%" }}
                         dropdownClass="text-gray-700"
                       />
                     </div>
