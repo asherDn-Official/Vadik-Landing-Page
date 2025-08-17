@@ -105,7 +105,7 @@ const QuestionCard = ({ question, answer, onAnswerChange }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+    <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-100">
       <div className="mb-6">
         <span
           className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(

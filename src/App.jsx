@@ -1,5 +1,12 @@
+/** @format */
+
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ProblemSection from "./components/ProblemSection";
@@ -12,6 +19,8 @@ import Footer from "./components/Footer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import "./App.css";
+import SpinWheelPage from "./pages/SpinWheelPage";
+import ScratchCardPage from "./pages/ScratchCardPage";
 import QuizPage from "./pages/QuizPage";
 
 function App() {
@@ -48,22 +57,46 @@ function App() {
       <CTA />
     </>
   );
+ 
+  const AppLayout = ({ children }) => {
+    const location = useLocation();
+    const isQuizPage = location.pathname.startsWith("/quiz");
+    const isSpinWheelPage = location.pathname.startsWith("/spinwheel");
+    const isScratchCardPage = location.pathname.startsWith("/scratchcard");
+    const shouldHideNavbarFooter =
+      isQuizPage || isSpinWheelPage || isScratchCardPage;
+
+    return (
+      <div className='min-h-screen bg-white'>
+        {!shouldHideNavbarFooter && <Navbar />}
+        {children}
+        {!shouldHideNavbarFooter && <Footer />}
+      </div>
+    );
+  };
 
   return (
     <Router>
-      <div className="min-h-screen bg-white">
-        <Navbar />
+      <AppLayout>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/quiz" element={<QuizPage />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/spinwheel/:spinWheelId' element={<SpinWheelPage />} />
           <Route
-            path="/terms-and-conditions"
+            path='/scratchcard/:scratchCardId'
+            element={<ScratchCardPage />}
+          />
+          <Route
+            path='/quiz/:quizId'
+            element={<QuizPage />}
+          />
+
+          <Route
+            path='/terms-and-conditions'
             element={<TermsAndConditions />}
           />
         </Routes>
-        <Footer />
-      </div>
+      </AppLayout>
     </Router>
   );
 }
