@@ -17,10 +17,8 @@ const formSchema = yup.object().shape({
     .string()
     .required("Email is required")
     .email("Invalid email format")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Invalid email format"
-    ),
+    .max(30, "Email must be 30 characters or less"),
+
   phone: yup
     .string()
     .required("Phone number is required")
@@ -102,7 +100,7 @@ const CTA = () => {
         fullName: "",
         email: "",
         phoneCode: "+91",
-        phone: "",
+        phone: formData.phoneCode+"",
         storeName: "",
         businessNeeds: "",
       });
@@ -188,11 +186,8 @@ const CTA = () => {
                         value={formData.fullName}
                         onChange={handleChange}
                         required
-                        maxLength={30}
                         className={`w-full px-4 py-2 border ${
-                          errors.fullName
-                            ? "border-red-500"
-                            : "border-gray-300"
+                          errors.fullName ? "border-red-500" : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700`}
                         placeholder="Your name"
                       />
@@ -213,6 +208,8 @@ const CTA = () => {
                         type="email"
                         id="email"
                         name="email"
+                        min="7"
+                        max={30}
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -258,7 +255,7 @@ const CTA = () => {
                         className="block text-sm font-medium text-gray-700 mb-1"
                         htmlFor="storeName"
                       >
-                        Store Name
+                        Business Name
                       </label>
                       <input
                         type="text"
