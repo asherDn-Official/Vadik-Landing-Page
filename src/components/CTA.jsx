@@ -270,7 +270,7 @@ const CTA = () => {
                             ? "border-red-500"
                             : "border-gray-300"
                         } text-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
-                        placeholder="Your store name"
+                        placeholder="Your Business name"
                       />
                       {errors.storeName && (
                         <p className="mt-1 text-sm text-red-600">
