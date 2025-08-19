@@ -388,7 +388,7 @@ const CTA = () => {
                     <div>
                       <p className="font-medium text-gray-800">Rajiv Kumar</p>
                       <p className="text-sm text-gray-500">
-                        Fashion Retailer, Delhi
+                        Fashion Business, Delhi
                       </p>
                     </div>
                   </div>
