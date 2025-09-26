@@ -6,6 +6,7 @@ export const quizService = {
   getQuiz: async (quizId, customerId) => {
     const response = await api.post(`/api/quiz/public/${quizId}`, {
       customerId: customerId,
+      type: "quiz",
     });
     return response.data;
   },

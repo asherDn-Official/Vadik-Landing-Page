@@ -4,9 +4,9 @@ import api from "../api/api";
 
 
 export const spinWheelService = {
-  
-  
-  
+
+
+
   getSpinWheel: async (spinWheelId, customerId) => {
     const response = await api.get(
       `/api/spinWheels/spinWheel/customer/${spinWheelId}?customerId=${customerId}`
@@ -14,10 +14,10 @@ export const spinWheelService = {
     return response.data;
   },
 
-  
-  
-  
-  
+
+
+
+
   getSpinWheelCoupons: async (couponIds) => {
     const response = await api.post(`/api/coupons/spicWheelCoupons`, {
       coupons: couponIds,
@@ -25,10 +25,10 @@ export const spinWheelService = {
     return response.data;
   },
 
-  
-  
-  
-  
+
+
+
+
   checkCouponClaim: async (spinWheelId, customerId, couponId) => {
     const response = await api.post(`/api/spinWheels/coupon/code/spinWheel`, {
       spinWheelId: spinWheelId,
@@ -38,21 +38,22 @@ export const spinWheelService = {
     return response.data;
   },
 
-  
-  
-  
-  
+
+
+
+
   getQuizData: async (quizId, customerId) => {
     const response = await api.post(`/api/quiz/public/${quizId}`, {
       customerId: customerId,
+      type: 'spinWheel'
     });
     return response.data;
   },
 
-  
-  
-  
-  
+
+
+
+
   submitQuiz: async (quizId, customerId, responses) => {
     const response = await api.post(`/api/quiz/submit`, {
       quizId: quizId,
@@ -62,17 +63,17 @@ export const spinWheelService = {
     return response.data;
   },
 
-  
-  
-  
-  
-  
+
+
+
+
+
   getFinalCouponDetails: async (couponId) => {
     const response = await api.post(`/api/coupons/couponforCampains`, {
       coupons: couponId,
     });
 
-    
+
     if (response.data && response.data.status && response.data.data) {
       return {
         status: true,
@@ -80,7 +81,7 @@ export const spinWheelService = {
       };
     }
 
-    
+
     return response.data;
   },
 };

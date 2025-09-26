@@ -32,6 +32,7 @@ export const scratchCardService = {
   getQuizData: async (quizId, customerId) => {
     const response = await api.post(`/api/quiz/public/${quizId}`, {
       customerId: customerId,
+      type:"scratchCard"
     });
     return response.data;
   },
