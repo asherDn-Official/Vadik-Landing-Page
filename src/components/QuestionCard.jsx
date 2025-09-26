@@ -2,6 +2,9 @@ import React from "react";
 import { CheckCircle, Circle, Square, CheckSquare } from "lucide-react";
 
 const QuestionCard = ({ question, answer, onAnswerChange }) => {
+
+  console.log(question);
+
   const getCategoryColor = (category) => {
     const colors = {
       Geography: "bg-blue-100 text-blue-800",
@@ -97,6 +100,18 @@ const QuestionCard = ({ question, answer, onAnswerChange }) => {
               className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-purple-400 focus:ring-purple-200 focus:ring-2 focus:outline-none transition-all duration-200 text-lg"
             />
           </div>
+        );
+
+      case "dateinput":
+        return (
+          <input
+            type='date'
+            value={answer || ""}
+            onChange={(e) =>
+              onAnswerChange(e.target.value)
+            }
+            className='w-full p-4 sm:p-5 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-base sm:text-lg transition-all duration-300 focus:ring-2 focus:ring-blue-200 focus:scale-[1.01] touch-manipulation'
+          />
         );
 
       default:

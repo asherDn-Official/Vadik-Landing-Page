@@ -54,6 +54,8 @@ const QuizPage = () => {
                 ? "text-input"
                 : q.type === "boolean"
                 ? "true-false"
+                : q.type === "date"
+                ? "dateinput"
                 : "multiple-choice",
             options: q.options || [],
             correctAnswer: q.correctAnswer || "", // API might not provide correct answers
@@ -279,6 +281,7 @@ const QuizPage = () => {
   }
 
   const currentQuestion = questions[quizState.currentQuestion];
+
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-2 pt-10 pb-10'>
