@@ -57,7 +57,7 @@ function App() {
       <CTA />
     </>
   );
- 
+
   const AppLayout = ({ children }) => {
     const location = useLocation();
     const isQuizPage = location.pathname.startsWith("/quiz");
@@ -67,7 +67,7 @@ function App() {
       isQuizPage || isSpinWheelPage || isScratchCardPage;
 
     return (
-      <div className='min-h-screen bg-white'>
+      <div className="min-h-screen bg-white">
         {!shouldHideNavbarFooter && <Navbar />}
         {children}
         {!shouldHideNavbarFooter && <Footer />}
@@ -77,26 +77,22 @@ function App() {
 
   return (
     <Router>
-      <AppLayout>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-          <Route path='/spinwheel/:spinWheelId' element={<SpinWheelPage />} />
+      <Routes>
+        <Route path="/spinwheel/:spinWheelId" element={<SpinWheelPage />} />
+        <Route
+          path="/scratchcard/:scratchCardId"
+          element={<ScratchCardPage />}
+        />
+        <Route path="/quiz/:quizId" element={<QuizPage />} />
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route
-            path='/scratchcard/:scratchCardId'
-            element={<ScratchCardPage />}
-          />
-          <Route
-            path='/quiz/:quizId'
-            element={<QuizPage />}
-          />
-
-          <Route
-            path='/terms-and-conditions'
+            path="/terms-and-conditions"
             element={<TermsAndConditions />}
           />
-        </Routes>
-      </AppLayout>
+        </Route>
+      </Routes>
     </Router>
   );
 }
