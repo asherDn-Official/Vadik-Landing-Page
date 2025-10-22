@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Outlet,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -69,7 +70,7 @@ function App() {
     return (
       <div className="min-h-screen bg-white">
         {!shouldHideNavbarFooter && <Navbar />}
-        {children}
+        <Outlet />
         {!shouldHideNavbarFooter && <Footer />}
       </div>
     );
@@ -85,7 +86,7 @@ function App() {
         />
         <Route path="/quiz/:quizId" element={<QuizPage />} />
         <Route element={<AppLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route
             path="/terms-and-conditions"
