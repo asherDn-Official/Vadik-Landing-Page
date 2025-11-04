@@ -53,29 +53,41 @@ const CTA = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({}); // Field-specific errors
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
-    setFormData({
+    const updatedData = {
       ...formData,
       [name]: value,
-    });
+    };
+    setFormData(updatedData);
 
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
+    try {
+      await formSchema.validateAt(name, updatedData);
+      setErrors((prev) => {
+        const { [name]: omitted, ...rest } = prev;
+        return rest;
+      });
+    } catch (validationError) {
+      setErrors((prev) => ({ ...prev, [name]: validationError.message }));
     }
   };
 
-  const handlePhoneChange = (value, country) => {
-    setFormData({
+  const handlePhoneChange = async (value, country) => {
+    const updatedData = {
       ...formData,
       phoneCode: `+${country.dialCode}`,
       phone: value.replace(country.dialCode, ""),
-    });
+    };
+    setFormData(updatedData);
 
-    // Clear phone error when user changes input
-    if (errors.phone) {
-      setErrors({ ...errors, phone: "" });
+    try {
+      await formSchema.validateAt("phone", updatedData);
+      setErrors((prev) => {
+        const { phone: omitted, ...rest } = prev;
+        return rest;
+      });
+    } catch (validationError) {
+      setErrors((prev) => ({ ...prev, phone: validationError.message }));
     }
   };
 
