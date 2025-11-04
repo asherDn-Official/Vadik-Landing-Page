@@ -58,6 +58,14 @@ const CouponPage = ({
     return null;
   }
 
+  const expiryDate = couponDetails.expiryDate
+    ? new Date(couponDetails.expiryDate)
+    : null;
+  const isExpired =
+    expiryDate && !Number.isNaN(expiryDate.getTime())
+      ? expiryDate.getTime() < Date.now()
+      : false;
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-2 sm:p-3 relative overflow-hidden'>
       {showConfetti && (
@@ -227,14 +235,13 @@ const CouponPage = ({
                       <p>{couponDetails.conditionMessage}</p>
                     </div>
                   )}
-                  {couponDetails.expiryDate && (
+                  {expiryDate && (
                     <div className='mt-3 text-xs text-gray-600 bg-red-50 p-2 rounded'>
                       <p className='font-semibold text-red-700'>Expiry Date:</p>
-                      <p>
-                        {new Date(
-                          couponDetails.expiryDate
-                        ).toLocaleDateString()}
-                      </p>
+                      <p>{expiryDate.toLocaleDateString()}</p>
+                      {isExpired && (
+                        <p className='mt-1 font-semibold text-red-600'>Coupon already expired</p>
+                      )}
                     </div>
                   )}
                 </div>
