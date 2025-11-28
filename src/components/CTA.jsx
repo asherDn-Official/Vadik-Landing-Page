@@ -337,7 +337,7 @@ const CTA = () => {
                       disabled={isSubmitting}
                       className="btn btn-primary flex-1"
                     >
-                      {isSubmitting ? "Submitting..." : "Sign up"}
+                      {isSubmitting ? "Submitting..." : "Free Trail"}
                     </button>
                     <button
                       type="submit"
