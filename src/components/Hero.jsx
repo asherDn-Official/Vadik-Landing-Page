@@ -36,7 +36,7 @@ const Hero = () => {
                 duration={500}
                 className="btn btn-primary"
               >
-                Sign Up
+                Free Demo
               </Link>
               <Link
                 to="cta"
