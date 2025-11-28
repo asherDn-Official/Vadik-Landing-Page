@@ -166,7 +166,7 @@ const CTA = () => {
             <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-10">
                 <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-                  Start Your Free Trial
+                  Start Your  Trial
                 </h3>
 
                 {formStatus === "success" ? (
