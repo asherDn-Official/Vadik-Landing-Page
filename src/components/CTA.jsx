@@ -49,6 +49,7 @@ const CTA = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDemoSubmitting, setIsDemoSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({}); // Field-specific errors
@@ -93,7 +94,12 @@ const CTA = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    const submitter = e.nativeEvent.submitter?.name;
+    if (submitter === "demo") {
+      setIsDemoSubmitting(true);
+    } else {
+      setIsSubmitting(true);
+    }
     setErrors({});
 
     try {
@@ -135,7 +141,11 @@ const CTA = () => {
         );
       }
     } finally {
-      setIsSubmitting(false);
+      if (submitter === "demo") {
+        setIsDemoSubmitting(false);
+      } else {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -323,14 +333,20 @@ const CTA = () => {
                   <div className="flex flex-wrap gap-4">
                     <button
                       type="submit"
+                      name="signup"
                       disabled={isSubmitting}
                       className="btn btn-primary flex-1"
                     >
                       {isSubmitting ? "Submitting..." : "Sign up"}
                     </button>
-                    {/* <button type="button" className="btn btn-secondary flex-1">
-                      Book a Demo
-                    </button> */}
+                    <button
+                      type="submit"
+                      name="demo"
+                      disabled={isDemoSubmitting}
+                      className="btn btn-secondary flex-1"
+                    >
+                      {isDemoSubmitting ? "Submitting..." : "Book a Demo"}
+                    </button>
                   </div>
                 </form>
               </div>
