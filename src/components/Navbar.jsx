@@ -77,7 +77,7 @@ const Navbar = () => {
               duration={500}
               className="btn btn-primary text-sm"
             >
-              Start Free Trial
+              Sign Up
             </Link>
           </div>
 

@@ -326,11 +326,11 @@ const CTA = () => {
                       disabled={isSubmitting}
                       className="btn btn-primary flex-1"
                     >
-                      {isSubmitting ? "Submitting..." : "Start Free Trial"}
+                      {isSubmitting ? "Submitting..." : "Sign up"}
                     </button>
-                    <button type="button" className="btn btn-secondary flex-1">
+                    {/* <button type="button" className="btn btn-secondary flex-1">
                       Book a Demo
-                    </button>
+                    </button> */}
                   </div>
                 </form>
               </div>
@@ -347,7 +347,7 @@ const CTA = () => {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-800">
-                        Free 14-day trial
+                        Free Demo
                       </h4>
                       <p className="text-gray-600 mt-1">
                         No credit card required to start.
