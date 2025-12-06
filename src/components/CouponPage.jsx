@@ -1,9 +1,10 @@
 /** @format */
 
-import { Copy, Check, AlertCircle } from "lucide-react";
+import { Copy, Check, AlertCircle, Download, Loader2 } from "lucide-react";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Confetti from "react-confetti";
+import html2canvas from "html2canvas";
 
 const CouponPage = ({
   couponDetails,
@@ -15,31 +16,33 @@ const CouponPage = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  
+  // Ref specifically for the CLEAN download version
+  const downloadRef = useRef(null);
+
   const [windowDimensions, setWindowDimensions] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 300,
     height: typeof window !== "undefined" ? window.innerHeight : 200,
   });
 
   useEffect(() => {
-    setShowConfetti(true);
+    if (!isAlreadyClaimed) {
+        setShowConfetti(true);
+        const timer = setTimeout(() => setShowConfetti(false), 8000);
+        return () => clearTimeout(timer);
+    }
+  }, [isAlreadyClaimed]);
 
-    const timer = setTimeout(() => {
-      setShowConfetti(false);
-    }, 8000);
-
+  useEffect(() => {
     const handleResize = () => {
       setWindowDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
       });
     };
-
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleCopyCode = async () => {
@@ -51,6 +54,35 @@ const CouponPage = ({
       } catch (err) {
         console.error("Failed to copy code:", err);
       }
+    }
+  };
+
+  const handleDownloadCoupon = async () => {
+    if (!downloadRef.current) return;
+
+    setIsDownloading(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Capture the hidden clean template
+      const canvas = await html2canvas(downloadRef.current, {
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: "#ffffff", // Clean white background
+      });
+
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `Coupon-${couponDetails.code || "Reward"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading coupon:", error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -81,66 +113,49 @@ const CouponPage = ({
           friction={0.99}
           opacity={0.9}
           tweenDuration={8000}
-          confettiSource={{
-            x: 0,
-            y: 0,
-            w: windowDimensions.width,
-            h: 0,
-          }}
-          drawShape={(ctx) => {
-            const shapes = ["square", "circle", "triangle", "ribbon"];
-            const shape = shapes[Math.floor(Math.random() * shapes.length)];
-
-            ctx.beginPath();
-
-            switch (shape) {
-              case "square": {
-                const size = Math.random() * 8 + 6;
-                ctx.fillRect(-size / 2, -size / 2, size, size);
-                break;
-              }
-              case "circle": {
-                const radius = Math.random() * 6 + 3;
-                ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-                ctx.fill();
-                break;
-              }
-              case "triangle": {
-                const triSize = Math.random() * 8 + 4;
-                ctx.moveTo(0, -triSize / 2);
-                ctx.lineTo(-triSize / 2, triSize / 2);
-                ctx.lineTo(triSize / 2, triSize / 2);
-                ctx.closePath();
-                ctx.fill();
-                break;
-              }
-              case "ribbon": {
-                const ribbonWidth = Math.random() * 4 + 2;
-                const ribbonHeight = Math.random() * 12 + 6;
-                ctx.fillRect(
-                  -ribbonWidth / 2,
-                  -ribbonHeight / 2,
-                  ribbonWidth,
-                  ribbonHeight
-                );
-                break;
-              }
-            }
-          }}
-          colors={[
-            "#FFD700",
-            "#FF6B6B",
-            "#4ECDC4",
-            "#45B7D1",
-            "#96CEB4",
-            "#FFEAA7",
-            "#FD79A8",
-            "#A29BFE",
-            "#00B894",
-            "#FDCB6E",
-          ]}
         />
       )}
+
+      {/* --- HIDDEN CLEAN DOWNLOAD TEMPLATE --- 
+          This is positioned off-screen so the user never sees it, 
+          but html2canvas can still capture it. 
+      */}
+      <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+        <div 
+            ref={downloadRef} 
+            className="w-[400px] bg-white p-8 rounded-xl border-4 border-dashed border-gray-800 text-center flex flex-col items-center justify-center"
+        >
+             {/* 1. Main Discount */}
+             <h1 className="text-5xl font-extrabold text-green-600 mb-2">
+                {couponDetails.couponType === "percentage"
+                    ? `${couponDetails.discount}% OFF`
+                    : couponDetails.couponType === "flat"
+                    ? `₹${couponDetails.discount} OFF`
+                    : `${couponDetails.discount}% OFF`}
+             </h1>
+             
+             {/* 2. Coupon Name */}
+             <p className="text-xl font-semibold text-gray-700 mb-6 uppercase tracking-wide">
+                {couponDetails.name}
+             </p>
+
+             {/* 3. The Code (Big & Clear) */}
+             <div className="bg-gray-100 border-2 border-gray-300 rounded-lg px-8 py-4 w-full mb-4">
+                <p className="text-sm text-gray-500 uppercase font-bold mb-1 tracking-widest">Code</p>
+                <p className="text-4xl font-mono font-black text-gray-900 tracking-wider">
+                    {couponDetails.code}
+                </p>
+             </div>
+
+             {/* 4. Minimal Footer */}
+             {expiryDate && (
+                <p className="text-sm text-gray-400 font-medium">
+                    Valid until: {expiryDate.toLocaleDateString()}
+                </p>
+             )}
+        </div>
+      </div>
+      {/* -------------------------------------- */}
 
       <div className='max-w-xl w-full relative z-10 px-1 sm:px-2'>
         <div className='bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-3 sm:p-5 md:p-6 text-center'>
@@ -167,27 +182,42 @@ const CouponPage = ({
               {showLoyaltyPoints ? "Your Reward Details" : "Your Coupon"}
             </h2>
 
+            {/* VISIBLE UI CARDS (Not captured by download) */}
             {isAlreadyClaimed ? (
-              <div className='bg-red-50 p-4 sm:p-6 rounded-lg border-2 border-dashed border-red-300'>
+              <div className='bg-blue-50 p-4 sm:p-6 rounded-lg border-2 border-dashed border-blue-300 relative'>
                 <div className='text-center'>
-                  <div className='w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3'>
-                    <AlertCircle className='w-6 h-6 text-red-600' />
+                  <div className='w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3'>
+                    <AlertCircle className='w-6 h-6 text-blue-600' />
                   </div>
-                  
-                  <div className='text-sm text-gray-600 mb-3'>
-                    This coupon has already been claimed and cannot be used
-                    again.
+                  <div className='text-sm text-gray-700 font-medium mb-3'>
+                    You already own this coupon!
                   </div>
-                  <div className='text-xs text-gray-500 bg-white p-2 rounded border'>
-                    <p className='font-semibold text-gray-700'>Coupon Code:</p>
-                    <p className='font-mono text-gray-600'>
-                      {couponDetails.code}
-                    </p>
+                  <div className='text-xs text-gray-500 bg-white p-3 rounded border shadow-sm'>
+                    <p className='font-semibold text-gray-700 mb-1'>Coupon Code:</p>
+                    <div className="flex items-center justify-center gap-2">
+                        <p className='font-mono text-lg font-bold text-blue-600 tracking-wider'>
+                        {couponDetails.code}
+                        </p>
+                        <button
+                          onClick={handleCopyCode}
+                          className='p-1 hover:bg-gray-100 rounded transition-all duration-200'
+                          title={copied ? "Copied!" : "Copy code"}
+                        >
+                          {copied ? (
+                            <Check className='w-4 h-4 text-green-600 animate-pulse' />
+                          ) : (
+                            <Copy className='w-4 h-4 text-gray-400 hover:text-blue-600' />
+                          )}
+                        </button>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-blue-200">
+                     <p className="text-lg font-bold text-gray-800">{couponDetails.name}</p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className='bg-white p-3 sm:p-4 rounded-lg border-2 border-dashed border-green-300'>
+              <div className='bg-white p-4 sm:p-6 rounded-lg border-2 border-dashed border-green-300 shadow-sm relative'>
                 <div className='text-center'>
                   <div className='text-xl sm:text-2xl font-bold text-green-600 mb-2'>
                     {couponDetails.couponType === "percentage"
@@ -204,15 +234,17 @@ const CouponPage = ({
                   </div>
                   {couponDetails.code && (
                     <div
-                      className={`p-2 sm:p-3 rounded-lg transition-colors duration-300 ${
+                      className={`p-2 sm:p-3 rounded-lg transition-colors duration-300 mb-2 ${
                         copied
                           ? "bg-green-50 border border-green-200"
                           : "bg-gray-100"
                       }`}
                     >
-                      <p className='text-xs text-gray-500 mb-1'>Coupon Code:</p>
+                      <p className='text-xs text-gray-500 mb-1'>
+                        Coupon Code:
+                      </p>
                       <div className='flex items-center justify-center gap-2'>
-                        <p className='font-mono font-bold text-sm sm:text-lg text-purple-600'>
+                        <p className='font-mono font-bold text-sm sm:text-lg text-purple-600 tracking-wider'>
                           {couponDetails.code}
                         </p>
                         <button
@@ -229,24 +261,43 @@ const CouponPage = ({
                       </div>
                     </div>
                   )}
-                  {couponDetails.condition && (
+
+                  {/* {couponDetails.condition && (
                     <div className='mt-3 text-xs text-gray-600 bg-yellow-50 p-2 rounded'>
                       <p className='font-semibold text-yellow-700'>Terms:</p>
                       <p>{couponDetails.conditionMessage}</p>
                     </div>
-                  )}
+                  )} */}
                   {expiryDate && (
                     <div className='mt-3 text-xs text-gray-600 bg-red-50 p-2 rounded'>
-                      <p className='font-semibold text-red-700'>Expiry Date:</p>
+                      <p className='font-semibold text-red-700'>
+                        Expiry Date:
+                      </p>
                       <p>{expiryDate.toLocaleDateString()}</p>
-                      {isExpired && (
-                        <p className='mt-1 font-semibold text-red-600'>Coupon already expired</p>
-                      )}
                     </div>
                   )}
                 </div>
               </div>
             )}
+
+            <button
+                onClick={handleDownloadCoupon}
+                disabled={isDownloading}
+                className='mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-xl transition-colors shadow-md disabled:opacity-70 disabled:cursor-not-allowed'
+            >
+                {isDownloading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4" />
+                    Download Code
+                  </>
+                )}
+            </button>
+
           </div>
         </div>
       </div>
