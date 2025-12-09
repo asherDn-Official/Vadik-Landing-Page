@@ -456,10 +456,10 @@ const SpinWheelPage = () => {
       <div className='text-center max-w-sm mx-auto px-4'>
         <XCircle className='w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-gray-500 mx-auto mb-3 sm:mb-4' />
         <h1 className='text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2'>
-          No Spin Wheel Available
+         Reward has been already collected Greate Job!
         </h1>
         <p className='text-sm sm:text-base text-gray-600'>
-          There are no spin wheels available for you at the moment.
+          There are no spin wheels available for you at the moment  or Reward has been already collected
         </p>
       </div>
     </div>
