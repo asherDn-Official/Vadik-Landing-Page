@@ -115,12 +115,10 @@ const QuizContainer = ({
         );
 
       case "date":
-         const today = new Date().toISOString().split("T")[0];
         return (
           <input
             type='date'
             value={answer || ""}
-            max={today}
             onChange={(e) =>
               handleAnswerChange(currentQuestion.key, e.target.value)
             }
