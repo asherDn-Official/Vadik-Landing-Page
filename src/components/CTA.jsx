@@ -53,6 +53,9 @@ const CTA = () => {
     agreeToTerms: false,
   });
 
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDemoSubmitting, setIsDemoSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState(null);
@@ -109,26 +112,46 @@ const CTA = () => {
     setErrors({});
 
     try {
-      // Validate form data
-      await formSchema.validate(formData, { abortEarly: false });
+      if (showOtpInput) {
+        // Verify OTP
+        if (!otp) {
+          setErrors({ otp: "OTP is required" });
+          throw new Error("OTP is required");
+        }
 
-      const payload = {
-        ...formData,
-        action: "FreeTrail",
-      };
+        const payload = {
+          email: formData.email,
+          otp: otp,
+        };
 
-      const response = await api.post(`/api/retailer/register`, payload);
+        await api.post(`/api/retailer/verify-email`, payload);
 
-      setFormStatus("success");
-      setFormData({
-        fullName: "",
-        email: "",
-        phoneCode: "+91",
-        phone: formData.phoneCode+"",
-        storeName: "",
-        businessNeeds: "",
-        agreeToTerms: false,
-      });
+        setFormStatus("success");
+        setFormData({
+          fullName: "",
+          email: "",
+          phoneCode: "+91",
+          phone: "",
+          storeName: "",
+          businessNeeds: "",
+          agreeToTerms: false,
+        });
+        setShowOtpInput(false);
+        setOtp("");
+      } else {
+        // Validate form data
+        await formSchema.validate(formData, { abortEarly: false });
+
+        const payload = {
+          ...formData,
+          action: "FreeTrail",
+        };
+
+        await api.post(`/api/retailer/register`, payload);
+
+        setShowOtpInput(true);
+        setFormStatus(null);
+      }
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         // Handle validation errors
@@ -139,6 +162,8 @@ const CTA = () => {
         setErrors(newErrors);
         setFormStatus("error");
         setErrorMessage("Please correct the errors in the form");
+      } else if (error.message === "OTP is required") {
+         // Handled above
       } else {
         // Handle API errors
         setFormStatus("error");
@@ -183,7 +208,7 @@ const CTA = () => {
             <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-10">
                 <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-                  Start Your  Trial
+                  Start Your Trial
                 </h3>
 
                 {formStatus === "success" ? (
@@ -200,194 +225,248 @@ const CTA = () => {
                 ) : null}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 text-left">
-                    <div>
-                      <label
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="fullName"
-                      >
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        required
-                        className={`w-full px-4 py-2 border ${
-                          errors.fullName ? "border-red-500" : "border-gray-300"
-                        } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700`}
-                        placeholder="Your name"
-                      />
-                      {errors.fullName && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.fullName}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="email"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        min="7"
-                        max={30}
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className={`w-full px-4 py-2 border ${
-                          errors.email ? "border-red-500" : "border-gray-300"
-                        } text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
-                        placeholder="you@company.com"
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.email}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                  {!showOtpInput ? (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 text-left">
+                        <div>
+                          <label
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                            htmlFor="fullName"
+                          >
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            required
+                            className={`w-full px-4 py-2 border ${
+                              errors.fullName
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700`}
+                            placeholder="Your name"
+                          />
+                          {errors.fullName && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.fullName}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                            htmlFor="email"
+                          >
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            min="7"
+                            max={30}
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            className={`w-full px-4 py-2 border ${
+                              errors.email
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
+                            placeholder="you@company.com"
+                          />
+                          {errors.email && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.email}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 text-left">
-                    <div>
-                      <label
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="phone"
-                      >
-                        Phone
-                      </label>
-                      <PhoneInput
-                        country={"in"}
-                        value={`${formData.phoneCode}${formData.phone}`}
-                        onChange={handlePhoneChange}
-                        inputClass={`w-full px-4 py-4 border ${
-                          errors.phone ? "border-red-500" : "border-gray-300"
-                        } text-gray-700 rounded-lg outline-none transition-all`}
-                        inputStyle={{ width: "100%" }}
-                        dropdownClass="text-gray-700"
-                      />
-                      {errors.phone && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.phone}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                        htmlFor="storeName"
-                      >
-                        Business Name
-                      </label>
-                      <input
-                        type="text"
-                        id="storeName"
-                        name="storeName"
-                        value={formData.storeName}
-                        onChange={handleChange}
-                        required
-                        maxLength={30}
-                        className={`w-full px-4 py-2 border ${
-                          errors.storeName
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        } text-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
-                        placeholder="Your Business name"
-                      />
-                      {errors.storeName && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.storeName}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 text-left">
+                        <div>
+                          <label
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                            htmlFor="phone"
+                          >
+                            Phone
+                          </label>
+                          <PhoneInput
+                            country={"in"}
+                            value={`${formData.phoneCode}${formData.phone}`}
+                            onChange={handlePhoneChange}
+                            inputClass={`w-full px-4 py-4 border ${
+                              errors.phone
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } text-gray-700 rounded-lg outline-none transition-all`}
+                            inputStyle={{ width: "100%" }}
+                            dropdownClass="text-gray-700"
+                          />
+                          {errors.phone && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.phone}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                            htmlFor="storeName"
+                          >
+                            Business Name
+                          </label>
+                          <input
+                            type="text"
+                            id="storeName"
+                            name="storeName"
+                            value={formData.storeName}
+                            onChange={handleChange}
+                            required
+                            maxLength={30}
+                            className={`w-full px-4 py-2 border ${
+                              errors.storeName
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } text-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
+                            placeholder="Your Business name"
+                          />
+                          {errors.storeName && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.storeName}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
-                  <div className="mb-6 ">
-                    <label
-                      className="block text-sm font-medium text-gray-700 mb-1 text-left "
-                      htmlFor="businessNeeds"
-                    >
-                      How can we help?
-                    </label>
-                    <textarea
-                      id="businessNeeds"
-                      name="businessNeeds"
-                      value={formData.businessNeeds}
-                      onChange={handleChange}
-                      rows="3"
-                      maxLength={500}
-                      className={`w-full px-4 py-2 text-gray-700 border ${
-                        errors.businessNeeds
-                          ? "border-red-500"
-                          : "border-gray-300"
-                      } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
-                      placeholder="Tell us about your business needs"
-                    ></textarea>
-                    {errors.businessNeeds && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.businessNeeds}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mb-6">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="agreeToTerms"
-                        checked={formData.agreeToTerms}
-                        onChange={handleChange}
-                        className="mr-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                      />
-                      <span className="text-sm text-gray-700">
-                        I agree to the{" "}
-                        <a
-                          href="/privacy-policy"
-                          className="text-primary-600 hover:underline"
+                      <div className="mb-6 ">
+                        <label
+                          className="block text-sm font-medium text-gray-700 mb-1 text-left "
+                          htmlFor="businessNeeds"
                         >
-                          Terms
-                        </a>{" "}
-                        and{" "}
-                        <a
-                          href="/privacy-policy"
-                          className="text-primary-600 hover:underline"
-                        >
-                          Privacy Policy
-                        </a>
-                      </span>
-                    </label>
-                    {errors.agreeToTerms && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.agreeToTerms}
-                      </p>
-                    )}
-                  </div>
+                          How can we help?
+                        </label>
+                        <textarea
+                          id="businessNeeds"
+                          name="businessNeeds"
+                          value={formData.businessNeeds}
+                          onChange={handleChange}
+                          rows="3"
+                          maxLength={500}
+                          className={`w-full px-4 py-2 text-gray-700 border ${
+                            errors.businessNeeds
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all`}
+                          placeholder="Tell us about your business needs"
+                        ></textarea>
+                        {errors.businessNeeds && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.businessNeeds}
+                          </p>
+                        )}
+                      </div>
 
-                  <div className="flex flex-wrap gap-4">
-                    <button
-                      type="submit"
-                      name="signup"
-                      disabled={isSubmitting}
-                      className="btn btn-primary flex-1"
-                    >
-                      {isSubmitting ? "Submitting..." : "Free Trail"}
-                    </button>
-                    <button
-                      type="submit"
-                      name="demo"
-                      disabled={isDemoSubmitting}
-                      className="btn btn-secondary flex-1"
-                    >
-                      {isDemoSubmitting ? "Submitting..." : "Book a Demo"}
-                    </button>
-                  </div>
+                      <div className="mb-6">
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            name="agreeToTerms"
+                            checked={formData.agreeToTerms}
+                            onChange={handleChange}
+                            className="mr-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                          />
+                          <span className="text-sm text-gray-700">
+                            I agree to the{" "}
+                            <a
+                              href="/privacy-policy"
+                              className="text-primary-600 hover:underline"
+                            >
+                              Terms
+                            </a>{" "}
+                            and{" "}
+                            <a
+                              href="/privacy-policy"
+                              className="text-primary-600 hover:underline"
+                            >
+                              Privacy Policy
+                            </a>
+                          </span>
+                        </label>
+                        {errors.agreeToTerms && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.agreeToTerms}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap gap-4">
+                        <button
+                          type="submit"
+                          name="signup"
+                          disabled={isSubmitting}
+                          className="btn btn-primary flex-1"
+                        >
+                          {isSubmitting ? "Submitting..." : "Free Trial"}
+                        </button>
+                        <button
+                          type="submit"
+                          name="demo"
+                          disabled={isDemoSubmitting}
+                          className="btn btn-secondary flex-1"
+                        >
+                          {isDemoSubmitting ? "Submitting..." : "Book a Demo"}
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-left">
+                      <h4 className="text-lg font-semibold mb-4 text-gray-800">
+                        Enter OTP
+                      </h4>
+                      <p className="text-sm text-gray-600 mb-4">
+                        We've sent a verification code to {formData.email}
+                      </p>
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          OTP
+                        </label>
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value)}
+                          className={`w-full px-4 py-2 border ${
+                            errors.otp ? "border-red-500" : "border-gray-300"
+                          } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all text-gray-700`}
+                          placeholder="Enter OTP"
+                        />
+                        {errors.otp && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.otp}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex gap-4">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn btn-primary flex-1"
+                        >
+                          {isSubmitting ? "Verifying..." : "Verify OTP"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowOtpInput(false)}
+                          className="btn btn-secondary flex-1"
+                        >
+                          Back
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </form>
               </div>
 
