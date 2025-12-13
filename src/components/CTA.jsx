@@ -17,7 +17,7 @@ const formSchema = yup.object().shape({
     .string()
     .required("Email is required")
     .email("Invalid email format")
-    .max(30, "Email must be 30 characters or less"),
+    .max(50, "Email must be 50 characters or less"),
 
   phone: yup
     .string()
@@ -31,6 +31,10 @@ const formSchema = yup.object().shape({
   businessNeeds: yup
     .string()
     .max(500, "Description must be 500 characters or less"),
+  agreeToTerms: yup
+    .boolean()
+    .oneOf([true], "You must accept the terms and conditions")
+    .required("You must accept the terms and conditions"),
 });
 
 const CTA = () => {
@@ -46,6 +50,7 @@ const CTA = () => {
     phone: "",
     storeName: "",
     businessNeeds: "",
+    agreeToTerms: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,10 +60,11 @@ const CTA = () => {
   const [errors, setErrors] = useState({}); // Field-specific errors
 
   const handleChange = async (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    const fieldValue = type === "checkbox" ? checked : value;
     const updatedData = {
       ...formData,
-      [name]: value,
+      [name]: fieldValue,
     };
     setFormData(updatedData);
 
@@ -121,6 +127,7 @@ const CTA = () => {
         phone: formData.phoneCode+"",
         storeName: "",
         businessNeeds: "",
+        agreeToTerms: false,
       });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
@@ -326,6 +333,39 @@ const CTA = () => {
                     {errors.businessNeeds && (
                       <p className="mt-1 text-sm text-red-600">
                         {errors.businessNeeds}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="agreeToTerms"
+                        checked={formData.agreeToTerms}
+                        onChange={handleChange}
+                        className="mr-2 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700">
+                        I agree to the{" "}
+                        <a
+                          href="/privacy-policy"
+                          className="text-primary-600 hover:underline"
+                        >
+                          Terms
+                        </a>{" "}
+                        and{" "}
+                        <a
+                          href="/privacy-policy"
+                          className="text-primary-600 hover:underline"
+                        >
+                          Privacy Policy
+                        </a>
+                      </span>
+                    </label>
+                    {errors.agreeToTerms && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.agreeToTerms}
                       </p>
                     )}
                   </div>
