@@ -49,21 +49,11 @@ function App() {
 
   const Home = () => (
     <>
-      <Helmet>
-        <title>Vadik.ai – Customer Profile Platform (CPP) for Business Growth</title>
-        <meta
-          name="description"
-          content="Vadik.ai is a powerful Customer Data Platform (CDP) that unifies customer data, delivers actionable insights, and helps businesses grow faster with AI-driven intelligence and automation."
-        />
-
-        <meta
-          name="keywords"
-          content="Vadik.ai, Customer Data Platform, CDP, AI CDP, Customer Analytics, Business Growth Platform, Data Unification, Marketing Automation, Customer Insights"
-        />
-
-        <meta name="author" content="Vadik.ai" />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEO
+        title="Vadik.ai – Customer Profile Platform (CPP) for Business Growth"
+        description="Vadik.ai helps businesses unify customer profiles..."
+        canonical="https://vadik.ai/"
+      />
       <Hero />
       <ProblemSection />
       <AboutSection />
