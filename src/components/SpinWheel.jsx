@@ -3,6 +3,27 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
+const getWrappedText = (text, maxCharsPerLine = 8) => {
+  if (!text) return [];
+
+  const words = text.split(" ");
+  const lines = [];
+  let currentLine = "";
+
+  words.forEach(word => {
+    if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
+      currentLine = (currentLine + " " + word).trim();
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  if (currentLine) lines.push(currentLine);
+  return lines.slice(0, 3); // max 3 lines
+};
+
+
 const SpinWheel = ({
   segments,
   onSpinComplete,
@@ -228,21 +249,30 @@ const SpinWheel = ({
                     <text
                       x={textX}
                       y={textY}
-                      textAnchor='middle'
-                      fill='white'
-                      fontSize='8'
-                      fontWeight='bold'
-                      transform={`rotate(${
-                        textAngle + 90
-                      }, ${textX}, ${textY})`}
-                      className='drop-shadow-md'
+                      textAnchor="middle"
+                      fill="white"
+                      fontWeight="bold"
+                      transform={`rotate(${textAngle + 90}, ${textX}, ${textY})`}
+                      className="drop-shadow-md"
                       style={{
                         textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                        fontSize: window.innerWidth < 640 ? "6px" : "8px",
                       }}
                     >
-                      {segment.coupon?.discount
-                        ? `${segment.coupon.discount}%`
-                        : segment.name || `${(index + 1) * 100}`}
+                      {getWrappedText(
+                        segment.coupon?.discount
+                          ? `${segment.coupon.discount}% OFF`
+                          : segment.name || `${(index + 1) * 100}`,
+                        window.innerWidth < 640 ? 6 : 9
+                      ).map((line, i) => (
+                        <tspan
+                          key={i}
+                          x={textX}
+                          dy={i === 0 ? "0em" : "1.2em"}
+                        >
+                          {line}
+                        </tspan>
+                      ))}
                     </text>
                   </g>
                 );
