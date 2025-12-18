@@ -201,8 +201,7 @@ const ScratchCardPage = () => {
 
       if (finalCouponResponse.status && finalCouponResponse.data) {
         setFinalCouponDetails(finalCouponResponse.data);
-        if (quizCompleted && loyaltyPoints > 0) {
-         } else {
+        if (!quizCompleted || loyaltyPoints === 0) {
           setIsAlreadyClaimed(true);
         }
       }
@@ -247,6 +246,8 @@ const ScratchCardPage = () => {
         title='Coupon Already Claimed'
         subtitle='You have already claimed this coupon. Here are your reward details!'
         isAlreadyClaimed={true}
+        logo={finalCouponDetails.logo}
+        storeName={finalCouponDetails.storeName}
       />
     );
   }
@@ -267,6 +268,8 @@ const ScratchCardPage = () => {
             ? "Thank you for completing the quiz. Here are your rewards!"
             : "You have already completed this quiz. Here are your reward details!"
         }
+        logo={finalCouponDetails.logo}
+        storeName={finalCouponDetails.storeName}
       />
     );
   }

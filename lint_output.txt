@@ -1,0 +1,104 @@
+
+> vadik-ai-landing@1.0.0 lint
+> eslint .
+
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\server\index.js
+   3:8   error  'mongoose' is defined but never used            no-unused-vars
+  16:14  error  'process' is not defined                        no-undef
+  23:7   error  'connectDB' is assigned a value but never used  no-unused-vars
+  30:5   error  'process' is not defined                        no-undef
+  55:5   error  'process' is not defined                        no-undef
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\App.jsx
+  62:24  error  'children' is defined but never used       no-unused-vars
+  62:24  error  'children' is missing in props validation  react/prop-types
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\AboutSection.jsx
+  74:36  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\CTA.jsx
+   77:25  error  'omitted' is assigned a value but never used                     no-unused-vars
+   96:24  error  'omitted' is assigned a value but never used                     no-unused-vars
+  431:27  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  502:27  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  524:21  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  525:27  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\CustomerProfile.jsx
+  106:23  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  106:52  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\Footer.jsx
+  1:18  error  'RouterLink' is defined but never used  no-unused-vars
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\Hero.jsx
+  19:20  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\HowItWorks.jsx
+  20:10  error  'activeTab' is assigned a value but never used  no-unused-vars
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\ModernScratchCard.jsx
+  4:22  error  'Play' is defined but never used  no-unused-vars
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\QuestionCard.jsx
+    1:8   error  'React' is defined but never used                      no-unused-vars
+    4:25  error  'question' is missing in props validation              react/prop-types
+    4:35  error  'answer' is missing in props validation                react/prop-types
+    4:43  error  'onAnswerChange' is missing in props validation        react/prop-types
+   28:22  error  'question.type' is missing in props validation         react/prop-types
+   33:23  error  'question.options' is missing in props validation      react/prop-types
+   33:32  error  'question.options.map' is missing in props validation  react/prop-types
+   47:46  error  'question.id' is missing in props validation           react/prop-types
+   62:23  error  'question.options' is missing in props validation      react/prop-types
+   62:32  error  'question.options.map' is missing in props validation  react/prop-types
+   64:49  error  'answer.includes' is missing in props validation       react/prop-types
+  106:10  error  Unexpected lexical declaration in case block           no-case-declarations
+  129:22  error  'question.category' is missing in props validation     react/prop-types
+  132:21  error  'question.category' is missing in props validation     react/prop-types
+  137:19  error  'question.question' is missing in props validation     react/prop-types
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\QuizResults.jsx
+   3:8   error  'React' is defined but never used                                        no-unused-vars
+   4:24  error  'RotateCcw' is defined but never used                                    no-unused-vars
+   4:35  error  'Sparkles' is defined but never used                                     no-unused-vars
+   7:3   error  'questions' is defined but never used                                    no-unused-vars
+   7:3   error  'questions' is missing in props validation                               react/prop-types
+   8:3   error  'answers' is defined but never used                                      no-unused-vars
+   8:3   error  'answers' is missing in props validation                                 react/prop-types
+   9:3   error  'onRestart' is missing in props validation                               react/prop-types
+  10:3   error  'quizId' is defined but never used                                       no-unused-vars
+  10:3   error  'quizId' is missing in props validation                                  react/prop-types
+  11:3   error  'customerId' is defined but never used                                   no-unused-vars
+  11:3   error  'customerId' is missing in props validation                              react/prop-types
+  12:3   error  'showLoyaltyOnly' is assigned a value but never used                     no-unused-vars
+  12:3   error  'showLoyaltyOnly' is missing in props validation                         react/prop-types
+  13:3   error  'quizSubmissionData' is missing in props validation                      react/prop-types
+  38:11  error  'quizSubmissionData.loyaltyPointsEarned' is missing in props validation  react/prop-types
+  38:32  error  'quizSubmissionData.message' is missing in props validation              react/prop-types
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\components\Testimonials.jsx
+  97:19  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  97:57  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\pages\PrivacyPolicy.jsx
+    1:8   error  'React' is defined but never used                                no-unused-vars
+   13:54  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   13:58  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   13:60  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   13:64  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   13:69  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   13:73  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   16:47  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   16:56  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  191:34  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  191:47  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\pages\QuizPage.jsx
+  3:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\gangadharan\Desktop\AsherDn\esd\Vadik-Landing-Page\src\pages\TermsAndConditions.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+✖ 67 problems (67 errors, 0 warnings)
+
