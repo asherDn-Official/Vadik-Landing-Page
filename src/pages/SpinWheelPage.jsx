@@ -363,6 +363,7 @@ const SpinWheelPage = () => {
                 isSpinning={isSpinning}
                 onSpinStart={() => setIsSpinning(true)}
                 onSpinComplete={handleSpinComplete}
+                targetedCoupons={spinWheelData?.targetedCoupons || []}
               />
             </div>
 
