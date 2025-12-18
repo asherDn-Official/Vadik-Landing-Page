@@ -67,34 +67,13 @@ const SpinWheel = ({
     }
   };
 
-  const wrapTextSmart = (text, maxCharsPerLine) => {
-      if (!text) return [];
+  const getFontSize = () => {
+    return window.innerWidth < 640 ? 7 : 8;
+  };
 
-      const words = text.split(" ");
-      const lines = [];
-      let currentLine = "";
-
-      for (let word of words) {
-        if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
-          currentLine = (currentLine + " " + word).trim();
-        } else {
-          lines.push(currentLine);
-          currentLine = word;
-        }
-      }
-
-      if (currentLine) lines.push(currentLine);
-
-      return lines.slice(0, 3);
-    };
-
-  const getFontSize = (text) => {
-    const length = text.length;
-
-    if (length > 25) return 5;
-    if (length > 18) return 6;
-    if (length > 12) return 7;
-    return 8;
+  const getDisplayText = (text, maxLength = 14) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "…" : text;
   };
 
   useEffect(() => {
@@ -280,29 +259,23 @@ const SpinWheel = ({
                       x={textX}
                       y={textY}
                       textAnchor="middle"
+                      dominantBaseline="middle"
                       fill="white"
                       fontWeight="bold"
                       transform={`rotate(${textAngle + 90}, ${textX}, ${textY})`}
                       className="drop-shadow-md"
                       style={{
                         textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
-                        fontSize: window.innerWidth < 640 ? "6px" : "8px",
+                        fontSize: `${getFontSize()}px`,
+                        pointerEvents: "none",
                       }}
                     >
-                      {getWrappedText(
+                      {getDisplayText(
                         segment.coupon?.discount
                           ? `${segment.coupon.discount}% OFF`
-                          : segment.name || `${(index + 1) * 100}`,
-                        window.innerWidth < 640 ? 6 : 9
-                      ).map((line, i) => (
-                        <tspan
-                          key={i}
-                          x={textX}
-                          dy={i === 0 ? "0em" : "1.2em"}
-                        >
-                          {line}
-                        </tspan>
-                      ))}
+                          : segment.name || "",
+                        window.innerWidth < 640 ? 10 : 14
+                      )}
                     </text>
                   </g>
                 );
