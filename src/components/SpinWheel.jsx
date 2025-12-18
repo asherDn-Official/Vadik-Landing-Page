@@ -3,7 +3,25 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
+const getWrappedText = (text, maxCharsPerLine = 8) => {
+  if (!text) return [];
 
+  const words = text.split(" ");
+  const lines = [];
+  let currentLine = "";
+
+  words.forEach(word => {
+    if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
+      currentLine = (currentLine + " " + word).trim();
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  if (currentLine) lines.push(currentLine);
+  return lines.slice(0, 3); // max 3 lines
+};
 
 
 const SpinWheel = ({
@@ -268,18 +286,20 @@ const SpinWheel = ({
                       className="drop-shadow-md"
                       style={{
                         textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
-                        fontSize: `${getFontSize(
-                          segment.coupon?.name || segment.name || ""
-                        )}px`,
+                        fontSize: window.innerWidth < 640 ? "6px" : "8px",
                       }}
                     >
-                      {wrapTextSmart(
+                      {getWrappedText(
                         segment.coupon?.discount
                           ? `${segment.coupon.discount}% OFF`
-                          : segment.name || "",
-                        window.innerWidth < 640 ? 8 : 10
+                          : segment.name || `${(index + 1) * 100}`,
+                        window.innerWidth < 640 ? 6 : 9
                       ).map((line, i) => (
-                        <tspan key={i} x={textX} dy={i === 0 ? "0em" : "1.2em"}>
+                        <tspan
+                          key={i}
+                          x={textX}
+                          dy={i === 0 ? "0em" : "1.2em"}
+                        >
                           {line}
                         </tspan>
                       ))}
