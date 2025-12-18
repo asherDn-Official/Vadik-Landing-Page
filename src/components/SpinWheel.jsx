@@ -3,35 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const wrapTextSmart = (text, maxCharsPerLine) => {
-  if (!text) return [];
 
-  const words = text.split(" ");
-  const lines = [];
-  let currentLine = "";
-
-  for (let word of words) {
-    if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
-      currentLine = (currentLine + " " + word).trim();
-    } else {
-      lines.push(currentLine);
-      currentLine = word;
-    }
-  }
-
-  if (currentLine) lines.push(currentLine);
-
-  return lines.slice(0, 3);
-};
-
-const getFontSize = (text) => {
-  const length = text.length;
-
-  if (length > 25) return 5;
-  if (length > 18) return 6;
-  if (length > 12) return 7;
-  return 8;
-};
 
 
 const SpinWheel = ({
@@ -75,6 +47,36 @@ const SpinWheel = ({
       oscillator.start(audioRef.current.currentTime);
       oscillator.stop(audioRef.current.currentTime + 0.1);
     }
+  };
+
+  const wrapTextSmart = (text, maxCharsPerLine) => {
+      if (!text) return [];
+
+      const words = text.split(" ");
+      const lines = [];
+      let currentLine = "";
+
+      for (let word of words) {
+        if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
+          currentLine = (currentLine + " " + word).trim();
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+
+      if (currentLine) lines.push(currentLine);
+
+      return lines.slice(0, 3);
+    };
+
+  const getFontSize = (text) => {
+    const length = text.length;
+
+    if (length > 25) return 5;
+    if (length > 18) return 6;
+    if (length > 12) return 7;
+    return 8;
   };
 
   useEffect(() => {
@@ -266,20 +268,18 @@ const SpinWheel = ({
                       className="drop-shadow-md"
                       style={{
                         textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
-                        fontSize: window.innerWidth < 640 ? "6px" : "8px",
+                        fontSize: `${getFontSize(
+                          segment.coupon?.name || segment.name || ""
+                        )}px`,
                       }}
                     >
-                      {getWrappedText(
+                      {wrapTextSmart(
                         segment.coupon?.discount
                           ? `${segment.coupon.discount}% OFF`
-                          : segment.name || `${(index + 1) * 100}`,
-                        window.innerWidth < 640 ? 6 : 9
+                          : segment.name || "",
+                        window.innerWidth < 640 ? 8 : 10
                       ).map((line, i) => (
-                        <tspan
-                          key={i}
-                          x={textX}
-                          dy={i === 0 ? "0em" : "1.2em"}
-                        >
+                        <tspan key={i} x={textX} dy={i === 0 ? "0em" : "1.2em"}>
                           {line}
                         </tspan>
                       ))}
