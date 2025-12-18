@@ -404,10 +404,10 @@ const SpinWheelPage = () => {
                       <div className='bg-gradient-to-r from-green-50 to-white p-2 sm:p-3 rounded-lg border-2 border-dashed border-green-300 shadow-inner'>
                         <div className='text-center'>
                           <div className='text-2xl sm:text-3xl md:text-4xl font-bold text-green-700 mb-1'>
-                            XX% OFF
+                            XXXXXXXX
                           </div>
                           <div className='text-xs text-green-600 opacity-80'>
-                            Discount Locked - Complete Quiz to Unlock
+                            Coupon Locked - Complete Quiz to Unlock
                           </div>
                         </div>
                       </div>
