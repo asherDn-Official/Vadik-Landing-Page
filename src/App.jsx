@@ -49,11 +49,11 @@ function App() {
 
   const Home = () => (
     <>
-      <SEO
+      {/* <SEO
         title="Vadik.ai – Customer Profile Platform (CPP) for Business Growth"
         description="Vadik.ai helps businesses unify customer profiles..."
         canonical="https://vadik.ai/"
-      />
+      /> */}
       <Hero />
       <ProblemSection />
       <AboutSection />

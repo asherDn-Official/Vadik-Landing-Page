@@ -369,8 +369,8 @@ const CouponPage = ({
   };
 
   const theme = {
-    grad: "from-[#0fa37f] to-[#0d8a6b]",
-    text: "text-[#0fa37f]",
+    grad: "from-yellow-400 to-orange-500",
+    text: "text-orange-500",
   };
 
   const expiryDate = couponDetails.expiryDate
@@ -378,13 +378,19 @@ const CouponPage = ({
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <div className='absolute inset-0 opacity-20'>
+        <div className='absolute top-0 left-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-yellow-400 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2'></div>
+        <div className='absolute bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-blue-400 rounded-full blur-3xl'></div>
+        <div className='absolute top-1/2 left-0 w-32 h-32 sm:w-48 sm:h-48 bg-purple-400 rounded-full blur-3xl'></div>
+      </div>
+
       {showConfetti && <Confetti recycle={false} />}
 
-      <div className="max-w-xl w-full flex flex-col items-center">
+      <div className="max-w-xl w-full flex flex-col items-center relative z-10">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-black text-slate-800">{title}</h1>
-          <p className="text-slate-500 font-medium">{subtitle}</p>
+          <h1 className="text-2xl font-black text-white drop-shadow-lg">{title}</h1>
+          <p className="text-slate-200 font-medium drop-shadow-md">{subtitle}</p>
         </div>
 
         {/* --- COUPON CARD --- */}
@@ -406,7 +412,7 @@ const CouponPage = ({
                     className="h-full w-full object-contain"
                   />
                 ) : (
-                  <Ticket className="text-[#0fa37f] w-8 h-8" />
+                  <Ticket className="text-orange-500 w-8 h-8" />
                 )}
               </div>
               <div className="flex flex-col">
