@@ -417,7 +417,7 @@ const CouponPage = ({
               </div>
               <div className="flex flex-col">
                 <h2 className="text-lg font-black uppercase tracking-wider leading-none">
-                  {storeName || "ASHERDN"}
+                  {storeName }
                 </h2>
                 <span className="text-[10px] font-bold opacity-70 mt-1.5 tracking-widest">
                   OFFICIAL VOUCHER
