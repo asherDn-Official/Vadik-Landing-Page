@@ -404,11 +404,10 @@ const CouponPage = ({
           >
             <div className="flex items-center gap-4">
               <div className="bg-white p-2 rounded-2xl shadow-sm h-14 w-14 flex items-center justify-center overflow-hidden">
-                {/* Use base64Logo for the UI and the Capture */}
-                {base64Logo || logo ? (
+                {base64Logo || couponDetails.logo || logo ? (
                   <img
-                    src={couponDetails.logo}
-                    alt="logo"
+                    src={base64Logo || couponDetails.logo || logo}
+                    alt={storeName || couponDetails.storeName || "logo"}
                     className="h-full w-full object-contain"
                   />
                 ) : (
@@ -417,7 +416,7 @@ const CouponPage = ({
               </div>
               <div className="flex flex-col">
                 <h2 className="text-lg font-black uppercase tracking-wider leading-none">
-                  {storeName }
+                  {storeName || couponDetails.storeName || "Premium Member"}
                 </h2>
                 <span className="text-[10px] font-bold opacity-70 mt-1.5 tracking-widest">
                   OFFICIAL VOUCHER
@@ -434,27 +433,28 @@ const CouponPage = ({
 
           {/* Body */}
           <div className="p-10 flex flex-col items-center text-center bg-white">
-            {/* VALUE SECTION: Fixed fontSize and lineHeight to stop overlapping */}
-            <div
-              className="flex flex-col items-center justify-center w-full mb-8"
-              style={{ minHeight: "110px" }}
-            >
+            {couponDetails.couponType !== "product" && (
               <div
-                className={`${theme.text} font-black tracking-tighter`}
-                style={{
-                  fontSize: "72px",
-                  lineHeight: "1",
-                  marginBottom: "8px",
-                }}
+                className="flex flex-col items-center justify-center w-full mb-8"
+                style={{ minHeight: "110px" }}
               >
-                {couponDetails.couponType === "percentage"
-                  ? `${couponDetails.discount}%`
-                  : `₹${couponDetails.discount}`}
+                <div
+                  className={`${theme.text} font-black tracking-tighter`}
+                  style={{
+                    fontSize: "72px",
+                    lineHeight: "1",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {couponDetails.couponType === "percentage"
+                    ? `${couponDetails.discount}%`
+                    : `₹${couponDetails.discount}`}
+                </div>
+                <div className="text-[12px] font-black text-slate-300 tracking-[0.4em] uppercase">
+                  Off Your Purchase
+                </div>
               </div>
-              <div className="text-[12px] font-black text-slate-300 tracking-[0.4em] uppercase">
-                Off Your Purchase
-              </div>
-            </div>
+            )}
 
             <div className="mb-8">
               <h3 className="text-2xl font-black text-slate-800 leading-tight">
@@ -464,6 +464,29 @@ const CouponPage = ({
                 {couponDetails.description}
               </p>
             </div>
+
+            {couponDetails.couponType === "product" &&
+              couponDetails.productImage && (
+                <div className="mb-8 flex flex-col items-center">
+                  <div className="w-28 h-28 rounded-2xl border border-slate-100 bg-slate-50 shadow-sm overflow-hidden flex items-center justify-center">
+                    <img
+                      src={couponDetails.productImage}
+                      alt={
+                        (couponDetails.productNames &&
+                          couponDetails.productNames[0]) ||
+                        "Product"
+                      }
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {couponDetails.productNames &&
+                    couponDetails.productNames.length > 0 && (
+                      <p className="mt-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">
+                        {couponDetails.productNames.join(", ")}
+                      </p>
+                    )}
+                </div>
+              )}
 
             <div className="w-full border-t-2 border-dashed border-slate-100 my-4 relative">
               <div className="absolute -left-[54px] -top-4 w-8 h-8 bg-slate-50 rounded-full border border-slate-200 shadow-inner"></div>
