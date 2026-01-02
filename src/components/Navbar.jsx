@@ -47,7 +47,7 @@ const Navbar = () => {
             {/* <span className="text-2xl font-bold text-primary-600">
               Vadik<span className="text-pink-500">.ai</span>
             </span> */}
-            <img className="w-36" src="./VadikLogoTransparent.png" alt="" />
+            <img className="w-36" src="./Vadik.ai_PNG.png" alt="" />
           </motion.div>
 
           {/* Desktop Navigation */}

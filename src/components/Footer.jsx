@@ -18,7 +18,7 @@ const Footer = () => {
           <div>
             <img
               className="w-20"
-              src="./VadikLogo-Dec-2025-Transparent.png"
+              src="./VadikLogo-Dec-2025-Transparent-4000px.png"
               alt="Vadik Logo"
             />
             <p className="text-gray-400 mb-6">
