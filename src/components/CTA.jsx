@@ -208,7 +208,7 @@ const CTA = () => {
             <div className="grid md:grid-cols-2">
               <div className="p-8 md:p-10">
                 <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-6">
-                  Start Your Trial
+                  Sign Up
                 </h3>
 
                 {formStatus === "success" ? (
@@ -410,7 +410,7 @@ const CTA = () => {
                           disabled={isSubmitting}
                           className="btn btn-primary flex-1"
                         >
-                          {isSubmitting ? "Submitting..." : "Free Trial"}
+                          {isSubmitting ? "Submitting..." : "Sign Up"}
                         </button>
                         <button
                           type="submit"
