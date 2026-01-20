@@ -482,7 +482,7 @@ const CTA = () => {
                     </div>
                     <div>
                       <h4 className="font-medium text-gray-800">
-                        Free Demo
+                        Sign Up
                       </h4>
                       <p className="text-gray-600 mt-1">
                         No credit card required to start.
