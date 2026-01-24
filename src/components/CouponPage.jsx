@@ -479,10 +479,9 @@ const CouponPage = ({
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  {couponDetails.productNames &&
-                    couponDetails.productNames.length > 0 && (
+                  {couponDetails.productNames &&(
                       <p className="mt-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">
-                        {couponDetails.productNames.join(", ")}
+                        {couponDetails.productNames}
                       </p>
                     )}
                 </div>
@@ -534,6 +533,10 @@ const CouponPage = ({
               {couponDetails.offerMessage ||
                 "Thank you for being a valued customer"}
             </p>
+          </div>
+          <div>
+            <h1>instructions to claim</h1>
+            <p> * You can claim through direct websites</p>
           </div>
         </div>
 
