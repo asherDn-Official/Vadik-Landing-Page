@@ -485,7 +485,7 @@ const CTA = () => {
                         Sign Up
                       </h4>
                       <p className="text-gray-600 mt-1">
-                        No credit card required to start.
+                       Request a demo for personalized walkthrough.
                       </p>
                     </div>
                   </div>
