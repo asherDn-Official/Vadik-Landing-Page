@@ -294,6 +294,7 @@ import { Copy, Check, Download, Ticket, Calendar } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Confetti from "react-confetti";
 import html2canvas from "html2canvas";
+import api from "../api/api";
 
 const CouponPage = ({
   couponDetails,
@@ -310,7 +311,25 @@ const CouponPage = ({
   const [downloading, setDownloading] = useState(false);
   const [base64Logo, setBase64Logo] = useState(null);
   const couponRef = useRef(null);
+  const [instruction,setInstruction] = useState()
 
+  console.log(couponDetails.retailerId,"0000")
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await api.get(
+        `/api/coupon-instruction/public/coupon-instruction?retailerId=${couponDetails.retailerId}`
+      );
+      setInstruction(res.data)
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchData();
+},[])
+console.log(couponDetails)
   // FIX: Convert the logo to Base64 so html2canvas can definitely "see" it
   useEffect(() => {
     if (logo) {
@@ -534,10 +553,28 @@ const CouponPage = ({
                 "Thank you for being a valued customer"}
             </p>
           </div>
-          <div>
-            <h1>instructions to claim</h1>
-            <p> * You can claim through direct websites</p>
+          <div className="mb-2 text-center">
+            <div className="mt-2">
+  <h1 className="font-bold mb-2">Redemption Instructions</h1>
+  <div >
+    {instruction?.instructions?.length > 0 ? (
+    instruction.instructions.map((item, index) => (
+      <p key={index} className="text-sm text-slate-600">
+        * {item.instruction}
+      </p>
+    ))
+  ) : (
+    <p className="text-sm text-slate-400">
+      No instructions available.
+    </p>
+  )}
+  </div>
+
+  
+</div>
           </div>
+          
+          
         </div>
 
         <button
