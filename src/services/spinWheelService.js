@@ -84,4 +84,14 @@ export const spinWheelService = {
 
     return response.data;
   },
+
+
+ claimSpinWheelCoupon: async (spinWheelId, customerId, couponId) => {
+    const response = await api.post(`/api/coupons/coupon/code/spinWheel/claim`, {
+      spinWheelId,
+      customerId,
+      couponId,
+    });
+    return response.data;
+  },
 };
