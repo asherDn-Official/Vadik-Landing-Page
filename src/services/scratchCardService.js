@@ -69,4 +69,13 @@ export const scratchCardService = {
     });
     return response.data;
   },
+
+  claimScratchCardAlreadyClaimed: async (scratchCardId, customerId, couponId) => {
+    const response = await api.post(`/api/scratchCards/scratchCard/code/customer/already-claim`, {
+      scratchCardId,
+      customerId,
+      couponId,
+    });
+    return response.data;
+  },
 };

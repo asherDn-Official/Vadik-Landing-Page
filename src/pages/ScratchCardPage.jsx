@@ -19,6 +19,7 @@ const ScratchCardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [couponClaimed, setCouponClaimed] = useState(false);
+  const [alreadyClaimedUpdated, setAlreadyClaimedUpdated] = useState(false);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizData, setQuizData] = useState(null);
@@ -99,6 +100,36 @@ const ScratchCardPage = () => {
     finalCouponDetails,
     selectedCoupon,
     couponClaimed,
+    scratchCardId,
+    customerId,
+  ]);
+
+  useEffect(() => {
+    if (
+      isAlreadyClaimed &&
+      finalCouponDetails &&
+      !alreadyClaimedUpdated &&
+      scratchCardId &&
+      customerId
+    ) {
+      scratchCardService
+        .claimScratchCardAlreadyClaimed(
+          scratchCardId,
+          customerId,
+          finalCouponDetails._id
+        )
+        .then(() => {
+          setAlreadyClaimedUpdated(true);
+          console.log("✅ Scratch card already-claimed record updated");
+        })
+        .catch((err) => {
+          console.error("❌ Scratch card already-claimed update failed:", err);
+        });
+    }
+  }, [
+    isAlreadyClaimed,
+    finalCouponDetails,
+    alreadyClaimedUpdated,
     scratchCardId,
     customerId,
   ]);
@@ -228,9 +259,7 @@ const ScratchCardPage = () => {
 
       if (finalCouponResponse.status && finalCouponResponse.data) {
         setFinalCouponDetails(finalCouponResponse.data);
-        if (!quizCompleted) {
-          setIsAlreadyClaimed(true);
-        }
+        setIsAlreadyClaimed(true);
       }
     } catch (err) {
       console.error("Error fetching final coupon details:", err);

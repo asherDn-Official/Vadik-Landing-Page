@@ -18,6 +18,7 @@ const SpinWheelPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [couponClaimed, setCouponClaimed] = useState(false);
+  const [alreadyClaimedUpdated, setAlreadyClaimedUpdated] = useState(false);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizData, setQuizData] = useState(null);
@@ -100,6 +101,36 @@ const SpinWheelPage = () => {
     finalCouponDetails,
     selectedCoupon,
     couponClaimed,
+    spinWheelId,
+    customerId,
+  ]);
+
+  useEffect(() => {
+    if (
+      isAlreadyClaimed &&
+      finalCouponDetails &&
+      !alreadyClaimedUpdated &&
+      spinWheelId &&
+      customerId
+    ) {
+      spinWheelService
+        .claimSpinWheelAlreadyClaimed(
+          spinWheelId,
+          customerId,
+          finalCouponDetails._id
+        )
+        .then(() => {
+          setAlreadyClaimedUpdated(true);
+          console.log("✅ Spin wheel already-claimed record updated");
+        })
+        .catch((err) => {
+          console.error("❌ Spin wheel already-claimed update failed:", err);
+        });
+    }
+  }, [
+    isAlreadyClaimed,
+    finalCouponDetails,
+    alreadyClaimedUpdated,
     spinWheelId,
     customerId,
   ]);

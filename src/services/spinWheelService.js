@@ -94,4 +94,13 @@ export const spinWheelService = {
     });
     return response.data;
   },
+
+  claimSpinWheelAlreadyClaimed: async (spinWheelId, customerId, couponId) => {
+    const response = await api.post(`/api/spinWheels/coupon/code/spinWheel/already-claim`, {
+      spinWheelId,
+      customerId,
+      couponId,
+    });
+    return response.data;
+  },
 };
