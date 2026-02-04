@@ -18,6 +18,7 @@ const ScratchCardPage = () => {
   const [couponData, setCouponData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [couponClaimed, setCouponClaimed] = useState(false);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizData, setQuizData] = useState(null);
@@ -71,6 +72,36 @@ const ScratchCardPage = () => {
 
     loadScratchCardData();
   }, [scratchCardId, customerId]);
+
+  useEffect(() => {
+    if (
+      quizCompleted &&
+      finalCouponDetails &&
+      selectedCoupon &&
+      !couponClaimed
+    ) {
+      scratchCardService
+        .claimScratchCardCoupon(
+          scratchCardId,
+          customerId,
+          selectedCoupon._id
+        )
+        .then(() => {
+          setCouponClaimed(true);
+          console.log("✅ Scratch card coupon successfully claimed");
+        })
+        .catch((err) => {
+          console.error("❌ Scratch card coupon claim failed:", err);
+        });
+    }
+  }, [
+    quizCompleted,
+    finalCouponDetails,
+    selectedCoupon,
+    couponClaimed,
+    scratchCardId,
+    customerId,
+  ]);
 
   const handleContinueQuiz = async () => {
     if (!scratchCardData || !selectedCoupon) return;
@@ -166,29 +197,25 @@ const ScratchCardPage = () => {
       }
 
       setQuizCompleted(true);
-      setShowQuiz(false);
 
-      await showFinalCouponDetails();
+      if (selectedCoupon?._id) {
+        try {
+          const finalCouponResponse =
+            await scratchCardService.getFinalCouponDetails(selectedCoupon._id);
+
+          if (finalCouponResponse.status && finalCouponResponse.data) {
+            setFinalCouponDetails(finalCouponResponse.data);
+          }
+        } catch (err) {
+          console.error("Error fetching final coupon details:", err);
+        }
+      }
+
+      setShowQuiz(false);
     } catch (err) {
       setError(err.message || "Failed to submit quiz");
     } finally {
       setIsSubmittingQuiz(false);
-    }
-  };
-
-  const showFinalCouponDetails = async () => {
-    if (!selectedCoupon?._id) return;
-
-    try {
-      const finalCouponResponse =
-        await scratchCardService.getFinalCouponDetails(selectedCoupon._id);
-
-      if (finalCouponResponse.status && finalCouponResponse.data) {
-        setFinalCouponDetails(finalCouponResponse.data);
-      }
-    } catch (err) {
-      console.error("Error fetching final coupon details:", err);
-      setError("Failed to load coupon details");
     }
   };
 
@@ -201,7 +228,7 @@ const ScratchCardPage = () => {
 
       if (finalCouponResponse.status && finalCouponResponse.data) {
         setFinalCouponDetails(finalCouponResponse.data);
-        if (!quizCompleted || loyaltyPoints === 0) {
+        if (!quizCompleted) {
           setIsAlreadyClaimed(true);
         }
       }

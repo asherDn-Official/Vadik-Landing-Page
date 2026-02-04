@@ -60,4 +60,13 @@ export const scratchCardService = {
  
     return response.data;
   },
+
+  claimScratchCardCoupon: async (scratchCardId, customerId, couponId) => {
+    const response = await api.post(`/api/coupons/coupon/code/scratchCard/claim`, {
+      scratchCardId,
+      customerId,
+      couponId,
+    });
+    return response.data;
+  },
 };

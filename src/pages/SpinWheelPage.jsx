@@ -17,7 +17,7 @@ const SpinWheelPage = () => {
   const [couponData, setCouponData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-const [couponClaimed, setCouponClaimed] = useState(false);
+  const [couponClaimed, setCouponClaimed] = useState(false);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizData, setQuizData] = useState(null);
@@ -73,35 +73,36 @@ const [couponClaimed, setCouponClaimed] = useState(false);
 
     loadSpinWheelData();
   }, [spinWheelId, customerId]);
-useEffect(() => {
-  if (
-    quizCompleted &&
-    finalCouponDetails &&
-    selectedCoupon &&
-    !couponClaimed
-  ) {
-    spinWheelService
-      .claimSpinWheelCoupon(
-        spinWheelId,
-        customerId,
-        selectedCoupon._id
-      )
-      .then(() => {
-        setCouponClaimed(true);
-        console.log("✅ Coupon successfully claimed");
-      })
-      .catch((err) => {
-        console.error("❌ Coupon claim failed:", err);
-      });
-  }
-}, [
-  quizCompleted,
-  finalCouponDetails,
-  selectedCoupon,
-  couponClaimed,
-  spinWheelId,
-  customerId,
-]);
+
+  useEffect(() => {
+    if (
+      quizCompleted &&
+      finalCouponDetails &&
+      selectedCoupon &&
+      !couponClaimed
+    ) {
+      spinWheelService
+        .claimSpinWheelCoupon(
+          spinWheelId,
+          customerId,
+          selectedCoupon._id
+        )
+        .then(() => {
+          setCouponClaimed(true);
+          console.log("✅ Coupon successfully claimed");
+        })
+        .catch((err) => {
+          console.error("❌ Coupon claim failed:", err);
+        });
+    }
+  }, [
+    quizCompleted,
+    finalCouponDetails,
+    selectedCoupon,
+    couponClaimed,
+    spinWheelId,
+    customerId,
+  ]);
 
   const handleSpinComplete = (segment) => {
     setWinningSegment(segment);
@@ -233,6 +234,7 @@ useEffect(() => {
       setIsSubmittingQuiz(false);
     }
   };
+
   const showFinalCouponDetailsForCoupon = async (couponId) => {
     if (!couponId) return;
 
