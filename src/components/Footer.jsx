@@ -18,10 +18,11 @@ const Footer = () => {
           <div>
             <img
               className="w-20"
-              src="./VadikLogo-Dec-2025-Transparent-4000px.png"
+              src="./vadik_ai_logo.svg"
               alt="Vadik Logo"
             />
-            <p className="text-gray-400 mb-6">
+            <div className="grid md:pl-4">
+              <p className="text-gray-400 mb-6">
               Customer Profile. Respect. Growth.
             </p>
             <div className="flex space-x-4">
@@ -50,6 +51,8 @@ const Footer = () => {
                 <FaLinkedin size={20} />
               </a>
             </div>
+            </div>
+            
           </div>
 
           <div>
